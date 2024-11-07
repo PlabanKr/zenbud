@@ -34,6 +34,8 @@ fn main() {
                 command::run_command(buffer, &mut file_data);
             }
             Ok(Signal::CtrlD) | Ok(Signal::CtrlC) => {
+                let data_string = serde_json::to_string(&file_data).expect("Unable to convert file_data to file_string");
+                std::fs::write(file_path,data_string.as_bytes()).expect("Unable to write data to json file");
                 println!("\nAborted!");
                 break;
             }
