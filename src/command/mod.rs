@@ -1,6 +1,10 @@
+use regex;
+
+
 pub fn run_command(command_str: String) {
-    let parts = command_str.split_whitespace();
-    let commands = parts.collect::<Vec<&str>>();
+    let regex_pattern = regex::Regex::new(r#"("[^"]+"|\S+)"#).unwrap();
+    // let parts = command_str.split_whitespace();
+    let commands: Vec<&str> = regex_pattern.find_iter(&command_str).map(|mat| mat.as_str()).collect();
 
     if commands.is_empty() {
         println!("Command required.");
