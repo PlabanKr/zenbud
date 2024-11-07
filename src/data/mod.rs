@@ -2,30 +2,30 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DataFile {
-  tasks: Vec<Task>,
-  hobbies: Vec<Hobby>,
-  routines: Vec<Routine>,
+  pub tasks: Vec<Task>,
+  pub hobbies: Vec<Hobby>,
+  pub routines: Vec<Routine>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
-struct Task {
-  name: String,
-  completed: bool,
-  eta: String,
+pub struct Task {
+  pub name: String,
+  pub completed: bool,
+  pub eta: String,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
-struct Hobby {
-  name: String,
-  situation: String,
-  next_plan: String,
+pub struct Hobby {
+  pub name: String,
+  pub situation: String,
+  pub next_plan: String,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
-struct Routine {
-  name: String,
-  description: String,
-  situation: String,
+pub struct Routine {
+  pub name: String,
+  pub description: String,
+  pub situation: String,
 }
 
 impl DataFile {
