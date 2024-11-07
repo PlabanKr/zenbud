@@ -27,9 +27,9 @@ fn handle_add(commands: &[&str]) {
         println!("add command requires more information.");
     } else {
         match commands[1] {
-            "task" => println!("Add task commands"),
-            "hobby" => println!("Add hobbies commands"),
-            "routine" => println!("Add routine commands"),
+            "task" => add_new_task(commands),
+            "hobby" => add_new_hobby(commands),
+            "routine" => add_new_routine(commands),
             _ => println!("Invalid add command"),
         }
     }
@@ -62,3 +62,27 @@ fn handle_remove(commands: &[&str]) {
 }
 
 
+
+pub fn add_new_task(commands: &[&str]) {
+    if commands.len() < 3 {
+        println!("cannot add empty task.");
+    } else {
+        println!("Add task commands with value {}", commands[2]);
+    }
+}
+
+pub fn add_new_hobby(commands: &[&str]) {
+    if commands.len() < 3 {
+        println!("cannot add empty hobby.");
+    } else {
+        println!("Add hobby commands with value {}", commands[2]);
+    }
+}
+
+pub fn add_new_routine(commands: &[&str]) {
+    if commands.len() < 3 {
+        println!("cannot add empty routine.");
+    } else {
+        println!("Add routine commands with value {}", commands[2]);
+    }
+}
