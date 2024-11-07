@@ -65,11 +65,18 @@ fn handle_remove(commands: &[&str], mut file_data: &mut data::DataFile) {
 
 
 
-pub fn add_new_task(commands: &[&str], mut file_data: &mut data::DataFile) {
+pub fn add_new_task(commands: &[&str], file_data: &mut data::DataFile) {
     if commands.len() < 3 {
         println!("cannot add empty task.");
     } else {
+        let new_task = data::Task {
+            name: commands[2].to_string(),
+            completed: false,
+            eta: String::new()
+        };
+        let _ = &file_data.tasks.push(new_task);
         println!("Add task commands with value {}", commands[2]);
+        println!("file data {:?}", file_data);
     }
 }
 
