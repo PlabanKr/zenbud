@@ -37,14 +37,14 @@ fn handle_add(commands: &[&str], mut file_data: &mut data::DataFile) {
     }
 }
 
-fn handle_list(commands: &[&str], mut file_data: &mut data::DataFile) {
+fn handle_list(commands: &[&str], file_data: &mut data::DataFile) {
     if commands.len() < 2 {
         println!("list command requires more information.");
     } else {
         match commands[1] {
-            "task" => println!("List task commands"),
-            "hobby" => println!("List hobbies commands"),
-            "routine" => println!("Add routine commands"),
+            "task" => list_all_tasks(file_data),
+            "hobby" => list_all_hobbies(file_data),
+            "routine" => list_all_routines(file_data),
             _ => println!("Invalid list command"),
         }
     }
@@ -105,5 +105,32 @@ pub fn add_new_routine(commands: &[&str], file_data: &mut data::DataFile) {
         };
         let _ = &file_data.routines.push(new_routine);
         println!("Add routine commands with value {}", commands[2]);
+    }
+}
+
+
+
+fn list_all_tasks(file_data: &mut data::DataFile) {
+    if file_data.tasks.is_empty() {
+        println!("No task found");
+    }
+    for task in &file_data.tasks {
+        println!("Name:{} | Completed:{} | ETA:{}", task.name, task.completed, task.eta)
+    }
+}
+fn list_all_hobbies(file_data: &mut data::DataFile) {
+    if file_data.hobbies.is_empty() {
+        println!("No hobby found");
+    }
+    for hobby in &file_data.hobbies {
+        println!("Name:{} | Situation:{} | Next Plan:{}", hobby.name, hobby.situation, hobby.next_plan)
+    }
+}
+fn list_all_routines(file_data: &mut data::DataFile) {
+    if file_data.routines.is_empty() {
+        println!("No routine found");
+    }
+    for routine in &file_data.routines {
+        println!("Name:{} | Situation{} | Description:{}", routine.name, routine.situation, routine.description)
     }
 }
