@@ -80,18 +80,30 @@ pub fn add_new_task(commands: &[&str], file_data: &mut data::DataFile) {
     }
 }
 
-pub fn add_new_hobby(commands: &[&str], mut file_data: &mut data::DataFile) {
+pub fn add_new_hobby(commands: &[&str], file_data: &mut data::DataFile) {
     if commands.len() < 3 {
         println!("cannot add empty hobby.");
     } else {
+        let new_hobby = data::Hobby {
+            name: commands[2].to_string(),
+            situation: String::new(),
+            next_plan: String::new()
+        };
+        let _ = &file_data.hobbies.push(new_hobby);
         println!("Add hobby commands with value {}", commands[2]);
     }
 }
 
-pub fn add_new_routine(commands: &[&str], mut file_data: &mut data::DataFile) {
+pub fn add_new_routine(commands: &[&str], file_data: &mut data::DataFile) {
     if commands.len() < 3 {
         println!("cannot add empty routine.");
     } else {
+        let new_routine = data::Routine {
+            name: commands[2].to_string(),
+            description: String::new(),
+            situation: String::new()
+        };
+        let _ = &file_data.routines.push(new_routine);
         println!("Add routine commands with value {}", commands[2]);
     }
 }
