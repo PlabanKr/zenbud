@@ -31,7 +31,7 @@ fn main() {
         let sig = line_editor.read_line(&prompt);
         match sig {
             Ok(Signal::Success(buffer)) => {
-                command::run_command(buffer);
+                command::run_command(buffer, &mut file_data);
             }
             Ok(Signal::CtrlD) | Ok(Signal::CtrlC) => {
                 println!("\nAborted!");
