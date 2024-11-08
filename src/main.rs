@@ -11,10 +11,10 @@ fn main() {
 
     let file_path = "data.json";
     if !std::path::Path::new(file_path).exists() {
-        let mut file = std::fs::File::create(file_path).expect("Unable to create the file");
+        let mut file = std::fs::File::create(file_path).expect("unable to create the file");
         let empty_data = data::DataFile::new();
-        let json = serde_json::to_string(&empty_data).expect("Unable to create empty json data");
-        file.write_all(json.as_bytes()).expect("Unable to write empty data");
+        let json = serde_json::to_string(&empty_data).expect("unable to create empty json data");
+        file.write_all(json.as_bytes()).expect("unable to write empty data");
     }
     let mut file_data: data::DataFile;
     let file = std::fs::OpenOptions::new()
@@ -22,10 +22,10 @@ fn main() {
         .write(true)
         .create(true)
         .open(file_path)
-        .expect("Unable to open file");
+        .expect("unable to open file");
     let reader = std::io::BufReader::new(file);
-    file_data = serde_json::from_reader(reader).expect("Unable to read json file");
-    println!("JSON DATA\n{:?}", file_data);
+    file_data = serde_json::from_reader(reader).expect("unable to read json file");
+    // println!("JSON DATA\n{:?}", file_data);
 
     loop {
         let sig = line_editor.read_line(&prompt);
@@ -34,13 +34,13 @@ fn main() {
                 command::run_command(buffer, &mut file_data);
             }
             Ok(Signal::CtrlD) | Ok(Signal::CtrlC) => {
-                let data_string = serde_json::to_string(&file_data).expect("Unable to convert file_data to file_string");
-                std::fs::write(file_path,data_string.as_bytes()).expect("Unable to write data to json file");
+                let data_string = serde_json::to_string(&file_data).expect("unable to convert file_data to file_string");
+                std::fs::write(file_path,data_string.as_bytes()).expect("unable to write data to json file");
                 println!("\nAborted!");
                 break;
             }
             x => {
-                println!("Event: {:?}", x);
+                println!("event: {:?}", x);
             }
         }
     }
