@@ -65,118 +65,109 @@ fn handle_remove(commands: &[&str], file_data: &mut data::DataFile) {
 
 
 
-pub fn add_new_task(commands: &[&str], file_data: &mut data::DataFile) {
-    if commands.len() < 3 {
-        println!("cannot add empty task");
-    } else if commands.len() > 3 {
-        if commands[3] != "-eta" {
-            println!("expected -eta provided {}", commands[3]);
-        } else {
-            if commands.len() < 5 {
-                println!("no eta value was provided")
-            } else {
-                let new_task = data::Task {
-                    name: commands[2].to_string(),
-                    completed: false,
-                    eta: commands[4].to_string(),
-                };
-                let _ = &file_data.tasks.push(new_task);
-            }
-        }
+fn check_command_length(commands: &[&str], required_length: usize, error_message: &str) -> bool {
+    if commands.len() < required_length {
+        println!("{}", error_message);
+        false
     } else {
-        let new_task = data::Task {
-            name: commands[2].to_string(),
-            completed: false,
-            eta: String::new()
-        };
-        let _ = &file_data.tasks.push(new_task);
+        true
     }
+}
+
+fn check_flag(commands: &[&str], index: usize, expected_flag: &str) -> bool {
+    if commands.get(index) != Some(&expected_flag) {
+        println!("expected {} but found {:?}", expected_flag, commands.get(index));
+        false
+    } else {
+        true
+    }
+}
+
+pub fn add_new_task(commands: &[&str], file_data: &mut data::DataFile) {
+    if !check_command_length(commands, 3, "cannot add empty task") {
+        return;
+    }
+
+    let task_name = commands[2].to_string();
+    let eta = if commands.len() > 3 {
+        if !check_flag(commands, 3, "-eta") || !check_command_length(commands, 5, "no eta value was provided") {
+            return;
+        }
+        commands[4].to_string()
+    } else {
+        String::new()
+    };
+
+    let new_task = data::Task {
+        name: task_name,
+        completed: false,
+        eta,
+    };
+    file_data.tasks.push(new_task);
 }
 
 pub fn add_new_hobby(commands: &[&str], file_data: &mut data::DataFile) {
-    if commands.len() < 3 {
-        println!("cannot add empty hobby");
-    } else if commands.len() > 3 {
-        if commands[3] != "-sit" {
-            println!("expected -sit provided {}", commands[3]);
-        } else {
-            if commands.len() < 5 {
-                println!("no situation value was provided")
-            } else if commands.len() > 5 { // add hobby fishing -sit "not doing"
-                if commands[5] != "-nxt" {
-                    println!("expected -nxt provided {}", commands[5]);
-                } else {
-                    if commands.len() < 7 {
-                        println!("no next_plan value was provided")
-                    } else {
-                        let new_hobby = data::Hobby {
-                            name: commands[2].to_string(),
-                            situation: commands[4].to_string(),
-                            next_plan: commands[6].to_string(),
-                        };
-                        let _ = &file_data.hobbies.push(new_hobby);
-                    }
-                }
-            } else {
-                let new_hobby = data::Hobby {
-                    name: commands[2].to_string(),
-                    situation: commands[4].to_string(),
-                    next_plan: String::new()
-                };
-                let _ = &file_data.hobbies.push(new_hobby);
-            }
-        }
-    } else {
-        let new_hobby = data::Hobby {
-            name: commands[2].to_string(),
-            situation: String::new(),
-            next_plan: String::new()
-        };
-        let _ = &file_data.hobbies.push(new_hobby);
+    if !check_command_length(commands, 3, "cannot add empty hobby") {
+        return;
     }
+
+    let hobby_name = commands[2].to_string();
+    let situation = if commands.len() > 3 {
+        if !check_flag(commands, 3, "-sit") || !check_command_length(commands, 5, "no situation value was provided") {
+            return;
+        }
+        commands[4].to_string()
+    } else {
+        String::new()
+    };
+
+    let next_plan = if commands.len() > 5 {
+        if !check_flag(commands, 5, "-nxt") || !check_command_length(commands, 7, "no next_plan value was provided") {
+            return;
+        }
+        commands[6].to_string()
+    } else {
+        String::new()
+    };
+
+    let new_hobby = data::Hobby {
+        name: hobby_name,
+        situation,
+        next_plan,
+    };
+    file_data.hobbies.push(new_hobby);
 }
 
 pub fn add_new_routine(commands: &[&str], file_data: &mut data::DataFile) {
-    if commands.len() < 3 {
-        println!("cannot add empty routine");
-    } else if commands.len() > 3 {
-        if commands[3] != "-des" {
-            println!("expected -des provided {}", commands[3]);
-        } else {
-            if commands.len() < 5 {
-                println!("no description value was provided")
-            } else if commands.len() > 5 { // add routine fishing -des "catch fish"
-                if commands[5] != "-sit" {
-                    println!("expected -sit provided {}", commands[5]);
-                } else {
-                    if commands.len() < 7 {
-                        println!("no situation value was provided")
-                    } else {
-                        let new_routine = data::Routine {
-                            name: commands[2].to_string(),
-                            description: commands[4].to_string(),
-                            situation: commands[6].to_string(),
-                        };
-                        let _ = &file_data.routines.push(new_routine);
-                    }
-                }
-            } else {
-                let new_routine = data::Routine {
-                    name: commands[2].to_string(),
-                    description: commands[4].to_string(),
-                    situation: String::new()
-                };
-                let _ = &file_data.routines.push(new_routine);
-            }
-        }
-    } else {
-        let new_routine = data::Routine {
-            name: commands[2].to_string(),
-            description: String::new(),
-            situation: String::new()
-        };
-        let _ = &file_data.routines.push(new_routine);
+    if !check_command_length(commands, 3, "cannot add empty routine") {
+        return;
     }
+
+    let routine_name = commands[2].to_string();
+    let description = if commands.len() > 3 {
+        if !check_flag(commands, 3, "-des") || !check_command_length(commands, 5, "no description value was provided") {
+            return;
+        }
+        commands[4].to_string()
+    } else {
+        String::new()
+    };
+
+    let situation = if commands.len() > 5 {
+        if !check_flag(commands, 5, "-sit") || !check_command_length(commands, 7, "no situation value was provided") {
+            return;
+        }
+        commands[6].to_string()
+    } else {
+        String::new()
+    };
+
+    let new_routine = data::Routine {
+        name: routine_name,
+        description,
+        situation,
+    };
+    file_data.routines.push(new_routine);
 }
 
 
