@@ -3,6 +3,7 @@ use regex;
 use crate::data;
 
 
+// main function that handles and parses the commands
 pub fn run_command(command_str: String, mut file_data: &mut data::DataFile) {
     let regex_pattern = regex::Regex::new(r#"("[^"]+"|\S+)"#).unwrap();
     // let parts = command_str.split_whitespace();
@@ -23,6 +24,9 @@ pub fn run_command(command_str: String, mut file_data: &mut data::DataFile) {
 
 // CRUD -> add, list, remove, update
 // task, routine, hobby
+
+// functions that handle the primary command types
+// currently we have only three primary command which are 'add', 'list' and 'remove'.
 
 fn handle_add(commands: &[&str], mut file_data: &mut data::DataFile) {
     if commands.len() < 2 {
@@ -65,6 +69,10 @@ fn handle_remove(commands: &[&str], file_data: &mut data::DataFile) {
 
 
 
+// helper functions for the add primary command functions
+
+// check_command_length function checks the command length with the required lenght and returns bool value
+// if the command length is lesser than the required length then it also prints an error message
 fn check_command_length(commands: &[&str], required_length: usize, error_message: &str) -> bool {
     if commands.len() < required_length {
         println!("{}", error_message);
@@ -74,6 +82,7 @@ fn check_command_length(commands: &[&str], required_length: usize, error_message
     }
 }
 
+// check_flag checks the given flag in the command with the expected flag and returns boolean value along with a error msg if the match fails
 fn check_flag(commands: &[&str], index: usize, expected_flag: &str) -> bool {
     if commands.get(index) != Some(&expected_flag) {
         println!("expected {} but found {:?}", expected_flag, commands.get(index));
@@ -82,6 +91,8 @@ fn check_flag(commands: &[&str], index: usize, expected_flag: &str) -> bool {
         true
     }
 }
+
+// functions that handles the add primary commands
 
 pub fn add_new_task(commands: &[&str], file_data: &mut data::DataFile) {
     if !check_command_length(commands, 3, "cannot add empty task") {
@@ -172,6 +183,8 @@ pub fn add_new_routine(commands: &[&str], file_data: &mut data::DataFile) {
 
 
 
+// functions that handles the list primary commands
+
 fn list_all_tasks(file_data: &mut data::DataFile) {
     if file_data.tasks.is_empty() {
         println!("no task found");
@@ -180,6 +193,7 @@ fn list_all_tasks(file_data: &mut data::DataFile) {
         println!("Name:{}\t|\tCompleted:{}\t|\tETA:{}", task.name, task.completed, task.eta)
     }
 }
+
 fn list_all_hobbies(file_data: &mut data::DataFile) {
     if file_data.hobbies.is_empty() {
         println!("no hobby found");
@@ -188,6 +202,7 @@ fn list_all_hobbies(file_data: &mut data::DataFile) {
         println!("Name:{}\t|\tSituation:{}\t|\tNext Plan:{}", hobby.name, hobby.situation, hobby.next_plan)
     }
 }
+
 fn list_all_routines(file_data: &mut data::DataFile) {
     if file_data.routines.is_empty() {
         println!("no routine found");
@@ -198,6 +213,8 @@ fn list_all_routines(file_data: &mut data::DataFile) {
 }
 
 
+
+// functions that handles the remove primary commands
 
 fn remove_task(commands: &[&str], file_data: &mut data::DataFile) {
     if file_data.tasks.is_empty() {
@@ -220,6 +237,7 @@ fn remove_task(commands: &[&str], file_data: &mut data::DataFile) {
         file_data.tasks.retain(|ele| ele.name != task_name);
     }
 }
+
 fn remove_hobby(commands: &[&str], file_data: &mut data::DataFile) {
     if file_data.tasks.is_empty() {
         println!("hobby list is empty");
@@ -241,6 +259,7 @@ fn remove_hobby(commands: &[&str], file_data: &mut data::DataFile) {
         file_data.hobbies.retain(|ele| ele.name != hobby_name);
     }
 }
+
 fn remove_routine(commands: &[&str], file_data: &mut data::DataFile) {
     if file_data.tasks.is_empty() {
         println!("routine list is empty");
