@@ -39,7 +39,7 @@ fn handle_add(commands: &[&str], mut file_data: &mut data::DataFile) {
 
 fn handle_list(commands: &[&str], file_data: &mut data::DataFile) {
     if commands.len() < 2 {
-        println!("list command requires more information.");
+        println!("list command requires more information");
     } else {
         match commands[1] {
             "task" => list_all_tasks(file_data),
@@ -50,14 +50,14 @@ fn handle_list(commands: &[&str], file_data: &mut data::DataFile) {
     }
 }
 
-fn handle_remove(commands: &[&str], mut file_data: &mut data::DataFile) {
+fn handle_remove(commands: &[&str], file_data: &mut data::DataFile) {
     if commands.len() < 2 {
-        println!("remove command requires more information.");
+        println!("remove command requires more information");
     } else {
         match commands[1] {
-            "task" => println!("Remove task commands"),
-            "hobby" => println!("Remove hobbies commands"),
-            "routine" => println!("Add routine commands"),
+            "task" => remove_task(commands, file_data),
+            "hobby" => remove_hobby(commands, file_data),
+            "routine" => remove_routine(commands, file_data),
             _ => println!("Invalid remove command"),
         }
     }
@@ -67,7 +67,7 @@ fn handle_remove(commands: &[&str], mut file_data: &mut data::DataFile) {
 
 pub fn add_new_task(commands: &[&str], file_data: &mut data::DataFile) {
     if commands.len() < 3 {
-        println!("cannot add empty task.");
+        println!("cannot add empty task");
     } else {
         let new_task = data::Task {
             name: commands[2].to_string(),
@@ -82,7 +82,7 @@ pub fn add_new_task(commands: &[&str], file_data: &mut data::DataFile) {
 
 pub fn add_new_hobby(commands: &[&str], file_data: &mut data::DataFile) {
     if commands.len() < 3 {
-        println!("cannot add empty hobby.");
+        println!("cannot add empty hobby");
     } else {
         let new_hobby = data::Hobby {
             name: commands[2].to_string(),
@@ -96,7 +96,7 @@ pub fn add_new_hobby(commands: &[&str], file_data: &mut data::DataFile) {
 
 pub fn add_new_routine(commands: &[&str], file_data: &mut data::DataFile) {
     if commands.len() < 3 {
-        println!("cannot add empty routine.");
+        println!("cannot add empty routine");
     } else {
         let new_routine = data::Routine {
             name: commands[2].to_string(),
@@ -132,5 +132,50 @@ fn list_all_routines(file_data: &mut data::DataFile) {
     }
     for routine in &file_data.routines {
         println!("Name:{} | Situation{} | Description:{}", routine.name, routine.situation, routine.description)
+    }
+}
+
+
+
+fn remove_task(commands: &[&str], file_data: &mut data::DataFile) {
+    if file_data.tasks.is_empty() {
+        println!("Task list is empty");
+        return;
+    }
+
+    if commands.len() < 3 {
+        println!("specify the task name to remove");
+        return;
+    } else {
+        let task_name = commands[2];
+        file_data.tasks.retain(|ele| ele.name != task_name);
+    }
+}
+fn remove_hobby(commands: &[&str], file_data: &mut data::DataFile) {
+    if file_data.tasks.is_empty() {
+        println!("Hobby list is empty");
+        return;
+    }
+
+    if commands.len() < 3 {
+        println!("specify the hobby name to remove");
+        return;
+    } else {
+        let hobby_name = commands[2];
+        file_data.hobbies.retain(|ele| ele.name != hobby_name);
+    }
+}
+fn remove_routine(commands: &[&str], file_data: &mut data::DataFile) {
+    if file_data.tasks.is_empty() {
+        println!("Routine list is empty");
+        return;
+    }
+
+    if commands.len() < 3 {
+        println!("specify the routine name to remove");
+        return;
+    } else {
+        let routine_name = commands[2];
+        file_data.routines.retain(|ele| ele.name != routine_name);
     }
 }
