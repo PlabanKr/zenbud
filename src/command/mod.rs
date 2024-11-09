@@ -18,6 +18,7 @@ pub fn run_command(command_str: String, mut file_data: &mut data::DataFile) {
         "add" => handle_add(&commands, &mut file_data),
         "list" => handle_list(&commands, &mut file_data),
         "remove" => handle_remove(&commands, &mut file_data),
+        "done" => handle_done(&commands, &mut file_data),
         _ => println!("did not understand: {}", command_str),
     }
 }
@@ -26,7 +27,7 @@ pub fn run_command(command_str: String, mut file_data: &mut data::DataFile) {
 // task, routine, hobby
 
 // functions that handle the primary command types
-// currently we have only three primary command which are 'add', 'list' and 'remove'.
+// currently we have four primary command which are 'add', 'list', 'remove' and 'done'.
 
 fn handle_add(commands: &[&str], mut file_data: &mut data::DataFile) {
     if commands.len() < 2 {
@@ -64,6 +65,21 @@ fn handle_remove(commands: &[&str], file_data: &mut data::DataFile) {
             "routine" => remove_routine(commands, file_data),
             _ => println!("invalid remove command"),
         }
+    }
+}
+
+fn handle_done(commands: &[&str], file_data: &mut data::DataFile) {
+    if commands.len() <  2 {
+        println!("done command requires the task name");
+    } else {
+        let task_name = commands[1];
+        for task in &mut file_data.tasks {
+            if task.name == task_name {
+                task.completed = true;
+                return;
+            }
+        }
+        println!("no task found with the name: {}", task_name);
     }
 }
 
