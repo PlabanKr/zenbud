@@ -15,12 +15,32 @@ pub fn run_command(command_str: String, mut file_data: &mut data::DataFile) {
     }
 
     match commands[0] {
+        "help" => handle_help(),
         "add" => handle_add(&commands, &mut file_data),
         "list" => handle_list(&commands, &mut file_data),
         "remove" => handle_remove(&commands, &mut file_data),
         "done" => handle_done(&commands, &mut file_data),
-        _ => println!("did not understand: {}", command_str),
+        _ => println!("did not understand: {} \n type \"help\" for more information", command_str),
     }
+}
+
+// help command
+fn handle_help() {
+    println!("Zenbud - a simple task manager. It manages tasks, hobbies and routines.");
+    println!("{:^80}", "add commands");
+    println!("add task <task_name> -eta <eta_value>");
+    println!("add hobby <hobby_name> -sit <situation_value> -nxt <next_plan_value>");
+    println!("add routine <routine_name> -des <description_value> -sit <situation_value>");
+    println!("{:^80}", "list commands");
+    println!("list task");
+    println!("list hobby");
+    println!("list routine");
+    println!("{:^80}", "remove commands");
+    println!("remove task <task_name>");
+    println!("remove hobby <hobby_name>");
+    println!("remove routine <routine_name>");
+    println!("{:^80}", "done commands");
+    println!("done <task_name>");
 }
 
 // CRUD -> add, list, remove, update
