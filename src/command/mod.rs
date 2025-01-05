@@ -23,6 +23,7 @@ pub fn run_command(command_str: String, mut file_data: &mut data::DataFile) {
         "list" => handle_list(&commands, &mut file_data),
         "remove" => handle_remove(&commands, &mut file_data),
         "done" => handle_done(&commands, &mut file_data),
+        "todo" => handle_todo(&commands, &mut file_data),
         _ => println!("did not understand: {} \n type \"help\" for more information", command_str),
     }
 }
@@ -103,6 +104,33 @@ fn handle_done(commands: &[&str], file_data: &mut data::DataFile) {
             }
         }
         println!("no task found with the name: {}", task_name);
+    }
+}
+
+fn handle_todo(_commands: &[&str], file_data: &mut data::DataFile) {
+    let mut list_item_count: u16 = 1;
+    println!("You can finish the following tasks:");
+    for task in &mut file_data.tasks {
+        if list_item_count > 5 {
+            break;
+        }
+        if !task.completed {
+            println!("{}. {}", list_item_count, task.name);
+            list_item_count += 1;
+        }
+    }
+    println!("\nOr you can continue with your hobbies and routines");
+    println!("your hobbies are:");
+    list_item_count = 1;
+    for hobby in &mut file_data.hobbies {
+        println!("{}. {}", list_item_count, hobby.name);
+        list_item_count += 1;
+    }
+    println!("\nyour routines are:");
+    list_item_count = 1;
+    for routine in &mut file_data.routines {
+        println!("{}. {}", list_item_count, routine.name);
+        list_item_count += 1;
     }
 }
 
